@@ -1,0 +1,335 @@
+/* popup.css — Uber Price Extractor — Light Theme */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+  background: #f7f7f7;
+  color: #111;
+  width: 340px;
+  min-height: 200px;
+  max-height: 560px;
+  overflow: hidden;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* ── Header ── */
+header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px 12px;
+  background: #fff;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.logo-img {
+  height: 28px;
+  width: auto;
+  flex-shrink: 0;
+}
+
+.brand-title {
+  font-size: 17px;
+  line-height: 1;
+  letter-spacing: -0.3px;
+  display: flex;
+  align-items: baseline;
+  gap: 0;
+}
+
+.brand-bold {
+  font-weight: 800;
+  color: #111;
+  text-transform: uppercase;
+  font-size: 17px;
+}
+
+.brand-light {
+  font-weight: 400;
+  color: #111;
+  font-size: 17px;
+  text-transform: lowercase;
+}
+
+/* ── Status Bar ── */
+.status-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  font-size: 11.5px;
+  color: #888;
+  background: #fafafa;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.status-bar.loading {
+  color: #888;
+}
+
+.status-bar.success {
+  color: #16a34a;
+}
+
+.status-bar.error {
+  color: #dc2626;
+}
+
+.spinner {
+  width: 11px;
+  height: 11px;
+  border: 2px solid #ddd;
+  border-top-color: #555;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Results ── */
+.results {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Summary Card ── */
+.summary-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 14px 16px;
+  background: #fff;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.summary-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.summary-label {
+  font-size: 10px;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  font-weight: 600;
+}
+
+.summary-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111;
+}
+
+.summary-value.accent {
+  color: #16a34a;
+}
+
+.divider {
+  width: 1px;
+  height: 36px;
+  background: #e5e5e5;
+}
+
+/* ── List ── */
+.list-header {
+  padding: 10px 16px 6px;
+  font-size: 10px;
+  color: #bbb;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  font-weight: 600;
+  background: #f7f7f7;
+}
+
+.price-list {
+  list-style: none;
+  overflow-y: auto;
+  max-height: 240px;
+  padding: 0 0 4px;
+  scrollbar-width: thin;
+  scrollbar-color: #ddd transparent;
+  background: #fff;
+}
+
+.price-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.price-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.price-list::-webkit-scrollbar-thumb {
+  background: #ddd;
+  border-radius: 2px;
+}
+
+.price-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background 0.12s;
+}
+
+.price-list li:hover {
+  background: #fafafa;
+}
+
+.price-list li:last-child {
+  border-bottom: none;
+}
+
+.ride-index {
+  font-size: 11px;
+  color: #bbb;
+  font-weight: 500;
+  min-width: 24px;
+}
+
+.ride-price {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #111;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Empty / Error States ── */
+.empty-state,
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+  text-align: center;
+  gap: 8px;
+  background: #fff;
+}
+
+.empty-icon {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #ccc;
+  margin-bottom: 4px;
+}
+
+.empty-state p,
+.error-state p {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.5;
+}
+
+.hint {
+  font-size: 11px !important;
+  color: #bbb !important;
+}
+
+.hint strong {
+  color: #999;
+}
+
+/* ── Actions ── */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #fff;
+  border-top: 1px solid #e5e5e5;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: none;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s;
+  letter-spacing: 0.1px;
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Copy button — full width flex */
+.btn-primary {
+  flex: 1;
+  padding: 10px 14px;
+  background: #111;
+  color: #fff;
+}
+
+.btn-primary:not(:disabled):hover {
+  background: #333;
+  transform: translateY(-1px);
+}
+
+.btn-primary:not(:disabled):active {
+  transform: translateY(0);
+}
+
+.btn-primary.copied {
+  background: #16a34a;
+}
+
+/* Refresh — compact square icon button */
+.btn-icon-only {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  padding: 0;
+  background: #f0f0f0;
+  color: #555;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.btn-icon-only:hover {
+  background: #e5e5e5;
+  color: #111;
+}
+
+.btn-icon-only:active {
+  background: #d8d8d8;
+}
+
+.btn-icon-only.spinning svg {
+  animation: spin 0.6s linear infinite;
+}
+
+/* ── Utility ── */
+.hidden {
+  display: none !important;
+}
