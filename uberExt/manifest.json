@@ -1,10 +1,15 @@
 {
   "manifest_version": 3,
-  "name": "Uber Ride Price Extractor",
+  "name": "uber ride calculator",
   "version": "1.0",
   "description": "Extracts all ride prices from your Uber trip history and shows the cumulative total.",
-  "permissions": ["activeTab", "scripting"],
-  "host_permissions": ["*://riders.uber.com/*"],
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "*://riders.uber.com/*"
+  ],
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
@@ -20,8 +25,12 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://riders.uber.com/*"],
-      "js": ["content.js"],
+      "matches": [
+        "*://riders.uber.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
       "run_at": "document_idle"
     }
   ]
