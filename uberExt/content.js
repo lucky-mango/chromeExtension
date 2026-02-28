@@ -23,8 +23,8 @@ function extractPrices() {
     if (priceEl) {
       const text = priceEl.innerText.trim();
       const match = text.match(PRICE_REGEX);
-      if (match && !seen.has(match[0] + text)) {
-        seen.add(match[0] + text);
+      if (match && !seen.has(text)) {
+        seen.add(text);
         const raw = match[0];
         const numeric = parseFloat(raw.replace(/[₹$€£¥,]/g, ''));
         if (!isNaN(numeric)) {
@@ -43,8 +43,8 @@ function extractPrices() {
       if (el.querySelector('div')) return;
       const text = el.innerText.trim();
       const match = text.match(PRICE_REGEX);
-      if (match && !seen.has(match[0] + text)) {
-        seen.add(match[0] + text);
+      if (match && !seen.has(text)) {
+        seen.add(text);
         const raw = match[0];
         const numeric = parseFloat(raw.replace(/[₹$€£¥,]/g, ''));
         if (!isNaN(numeric)) {

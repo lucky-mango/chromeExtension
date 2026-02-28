@@ -1,76 +1,102 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trip Cost Calculator for Uber</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Uber Price Extractor</title>
-  <link rel="stylesheet" href="popup.css" />
-</head>
+  <body>
+    <div class="container">
+      <header>
+        <img src="uberExtLogo.png" class="logo-img" alt="logo" />
+        <h1 class="brand-title">
+          <span class="brand-bold">RIDE</span
+          ><span class="brand-light">calculator</span>
+        </h1>
+      </header>
 
-<body>
-  <div class="container">
-    <header>
-      <img src="uberExtLogo.png" class="logo-img" alt="logo" />
-      <h1 class="brand-title"><span class="brand-bold">RIDE</span><span class="brand-light">calculator</span></h1>
-    </header>
-
-    <div id="status-bar" class="status-bar loading">
-      <span class="spinner"></span>
-      <span id="status-text">Scanning page...</span>
-    </div>
-
-    <div id="results" class="results hidden">
-      <div class="summary-card">
-        <div class="summary-item">
-          <span class="summary-label">Rides Found</span>
-          <span id="ride-count" class="summary-value">0</span>
-        </div>
-        <div class="divider"></div>
-        <div class="summary-item">
-          <span class="summary-label">Total Spent</span>
-          <span id="total-amount" class="summary-value accent">₹0.00</span>
-        </div>
+      <div id="status-bar" class="status-bar loading">
+        <span class="spinner"></span>
+        <span id="status-text">Scanning page...</span>
       </div>
 
-      <div class="list-header">
-        <span>Ride Breakdown</span>
+      <div id="results" class="results hidden">
+        <div class="summary-card">
+          <div class="summary-item">
+            <span class="summary-label">Rides Found</span>
+            <span id="ride-count" class="summary-value">0</span>
+          </div>
+          <div class="divider"></div>
+          <div class="summary-item">
+            <span class="summary-label">Total Spent</span>
+            <span id="total-amount" class="summary-value accent">₹0.00</span>
+          </div>
+        </div>
+
+        <div class="list-header">
+          <span>Ride Breakdown</span>
+        </div>
+        <ul id="price-list" class="price-list"></ul>
       </div>
-      <ul id="price-list" class="price-list"></ul>
+
+      <div id="empty-state" class="empty-state hidden">
+        <div class="empty-icon">No prices found</div>
+        <p>No ride prices found on this page.</p>
+        <p class="hint">
+          Make sure you're on <strong>riders.uber.com/trips</strong> and the
+          page has loaded fully.
+        </p>
+      </div>
+
+      <div id="error-state" class="error-state hidden">
+        <div class="empty-icon">Error</div>
+        <p id="error-message">Could not connect to the page.</p>
+        <p class="hint">
+          Navigate to <strong>riders.uber.com/trips</strong> first.
+        </p>
+      </div>
+
+      <div class="actions">
+        <button id="copy-btn" class="btn btn-primary" disabled>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path
+              d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+            ></path>
+          </svg>
+          <span id="copy-label">Copy to Clipboard</span>
+        </button>
+        <button id="refresh-btn" class="btn btn-icon-only" title="Refresh">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+          </svg>
+        </button>
+      </div>
     </div>
 
-    <div id="empty-state" class="empty-state hidden">
-      <div class="empty-icon">No prices found</div>
-      <p>No ride prices found on this page.</p>
-      <p class="hint">Make sure you're on <strong>riders.uber.com/trips</strong> and the page has loaded fully.</p>
-    </div>
-
-    <div id="error-state" class="error-state hidden">
-      <div class="empty-icon">Error</div>
-      <p id="error-message">Could not connect to the page.</p>
-      <p class="hint">Navigate to <strong>riders.uber.com/trips</strong> first.</p>
-    </div>
-
-    <div class="actions">
-      <button id="copy-btn" class="btn btn-primary" disabled>
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-        </svg>
-        <span id="copy-label">Copy to Clipboard</span>
-      </button>
-      <button id="refresh-btn" class="btn btn-icon-only" title="Refresh">
-        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="23 4 23 10 17 10"></polyline>
-          <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
-        </svg>
-      </button>
-    </div>
-  </div>
-
-  <script src="popup.js"></script>
-</body>
-
+    <script src="popup.js"></script>
+  </body>
 </html>
