@@ -1,44 +1,87 @@
-# Uber Ride Price Extractor
+# Trip Cost Calculator for Uber
 
-A Chrome extension that scrapes all ride prices from your Uber trip history page and calculates the cumulative total.
+> A Chrome extension that scans your Uber trip history and calculates the cumulative total cost — instantly.
+
+![Manifest Version](https://img.shields.io/badge/Manifest-V3-blue)
+![Chrome](https://img.shields.io/badge/Chrome-102%2B-yellow?logo=googlechrome)
+![License](https://img.shields.io/badge/License-MIT-green)
 
 ---
 
-## How It Works
+## ✨ Features
 
-### Overview
+- 🔍 Automatically extracts all ride prices visible on your Uber trips page
+- 💰 Calculates the **cumulative total** across all loaded rides
+- 📋 **Copy to clipboard** — exports a plain-text summary of all rides and the total
+- 🌍 Supports multiple currencies: ₹, $, €, £, ¥
+- ⚡ Works entirely in your browser — no data ever leaves your device
 
-The extension injects a content script into `riders.uber.com` pages. When you open the popup, it sends a message to the content script asking it to scan the DOM for ride prices, then displays the results.
+---
 
-### Flow
+## 🚀 Installation (Developer Mode)
+
+> The extension is not yet on the Chrome Web Store. Install it manually:
+
+1. Clone or download this repository.
+2. Open Chrome and go to `chrome://extensions`.
+3. Enable **Developer mode** (toggle in the top-right corner).
+4. Click **Load unpacked** and select the `uberExt` folder.
+5. Navigate to [riders.uber.com/trips](https://riders.uber.com/trips).
+6. Click the extension icon in the toolbar.
+
+> **Tip:** Scroll down on the trips page to load more rides _before_ opening the popup — Uber uses lazy/virtual rendering, so only visible rides are counted.
+
+---
+
+## 🔒 Permissions
+
+| Permission                          | Why it's needed                                     |
+| ----------------------------------- | --------------------------------------------------- |
+| `activeTab`                         | Read the current tab's URL and communicate with it  |
+| `scripting`                         | Inject the price-scraping script into the Uber page |
+| `host_permissions: riders.uber.com` | Scope access strictly to Uber's rider site only     |
+
+---
+
+## 🗂️ Project Structure
+
+| File            | Purpose                                                    |
+| --------------- | ---------------------------------------------------------- |
+| `manifest.json` | Extension config — permissions, icons, content scripts     |
+| `content.js`    | Injected into Uber pages; scrapes ride prices from the DOM |
+| `popup.html`    | Extension popup UI structure                               |
+| `popup.css`     | Popup styles                                               |
+| `popup.js`      | Popup logic — messaging, rendering, copy to clipboard      |
+| `icons/`        | PNG icons at 16×16, 48×48, 128×128                         |
+
+---
+
+## ⚙️ How It Works
 
 ```
 User opens popup
       │
       ▼
-popup.js queries the active tab
+popup.js checks the active tab
       │
-      ├─ Not on riders.uber.com? → Show error state
-      │
-      ▼
-Injects content.js into the page (if not already present)
+      ├─ Not on riders.uber.com? → Show error
       │
       ▼
-Sends { action: 'extractPrices' } message to content.js
+Sends { action: 'extractPrices' } to content.js
       │
       ▼
 content.js scans the DOM for price elements
       │
-      ├─ Strategy 1: targets div[style*="flex: 1 1 0%"][style*="padding-right"]
-      │              and reads the last child div (which contains the price text)
+      ├─ Strategy 1: targets flex container divs with padding-right style
+      │              and reads the last child div (contains the price text)
       │
-      └─ Strategy 2 (fallback): scans all leaf-level divs for currency patterns
+      └─ Strategy 2 (fallback): scans all leaf divs for currency patterns
       │
       ▼
 Returns { prices: [...], total: number } to popup.js
       │
       ▼
-popup.js renders the ride list and summary card
+popup.js renders the ride list and total summary
 ```
 
 ### DOM Targeting
@@ -48,54 +91,28 @@ The Uber trips page renders each trip row roughly like this:
 ```html
 <div class="_css-dtlLLD">
   <div style="flex: 1 1 0%; padding-right: 4px">
-    <div data-baseweb="typo-labellarge">Le Méridien New Delhi</div>  <!-- destination -->
-    <div>31 Jan • 19:07</div>                                        <!-- date/time -->
-    <div>₹0.00 • Unfulfilled</div>                                   <!-- ← PRICE -->
+    <div data-baseweb="typo-labellarge">Le Méridien New Delhi</div>
+    <!-- destination -->
+    <div>31 Jan • 19:07</div>
+    <!-- date/time -->
+    <div>₹0.00 • Unfulfilled</div>
+    <!-- ← PRICE -->
   </div>
 </div>
 ```
 
-`content.js` selects the flex container and reads the **last child div** to extract the price using the regex `/[₹$€£¥][\d,]+\.?\d*/`.
+`content.js` selects the flex container and reads the **last child div**, extracting the price using the regex `/[₹$€£¥][\d,]+\.?\d*/`.
 
 ---
 
-## Installation
+## 🤝 Contributing
 
-1. Clone or download this folder.
-2. Open Chrome and go to `chrome://extensions`.
-3. Enable **Developer mode** (top-right toggle).
-4. Click **Load unpacked** and select the `uberExt` folder.
-5. Navigate to [riders.uber.com/trips](https://riders.uber.com/trips).
-6. Click the extension icon in the toolbar.
+Contributions are welcome! If Uber updates their DOM structure and the extension breaks, feel free to open an issue or submit a pull request.
 
 ---
 
-## Files
+## 📄 License
 
-| File | Purpose |
-|------|---------|
-| `manifest.json` | Extension config — permissions, content scripts, popup |
-| `content.js` | Injected into Uber pages; scrapes ride prices from the DOM |
-| `popup.html` | Extension popup UI structure |
-| `popup.css` | Popup styles (light theme, system font) |
-| `popup.js` | Popup logic — messaging, rendering, copy to clipboard |
-| `generate-icons.js` | Script to generate extension icons |
-| `icons/` | PNG icons at 16×16, 48×48, 128×128 |
+This project is licensed under the [MIT License](LICENSE).
 
----
-
-## Permissions
-
-| Permission | Why |
-|-----------|-----|
-| `activeTab` | Read the current tab's URL and send messages to it |
-| `scripting` | Programmatically inject `content.js` as a fallback |
-| `host_permissions: riders.uber.com` | Allows content script injection on Uber's rider site |
-
----
-
-## Notes
-
-- Scroll down on the trips page to load more rides before opening the popup — Uber uses virtual/lazy rendering.
-- The extension supports ₹, $, €, £, and ¥ currency symbols.
-- The **Copy to Clipboard** button exports a plain-text summary of all rides and the total.
+> **Disclaimer:** This extension is not affiliated with, endorsed by, or connected to Uber Technologies, Inc. "Uber" is a trademark of Uber Technologies, Inc.

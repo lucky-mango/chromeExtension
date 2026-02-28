@@ -132,6 +132,9 @@ copyBtn.addEventListener('click', () => {
             copyBtn.classList.remove('copied');
             copyLabel.textContent = 'Copy to Clipboard';
         }, 2000);
+    }).catch(() => {
+        copyLabel.textContent = 'Failed — try again';
+        setTimeout(() => { copyLabel.textContent = 'Copy to Clipboard'; }, 2000);
     });
 });
 
