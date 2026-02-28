@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Trip Cost Calculator for Uber",
   "version": "1.0.0",
-  "description": "Automatically extracts all ride prices from your Uber trip history page and calculates the cumulative total cost. Works on riders.uber.com.",
+  "description": "Extracts all ride prices from your Uber trip history and calculates the cumulative total cost. Works on riders.uber.com.",
   "minimum_chrome_version": "102",
   "permissions": ["activeTab", "scripting"],
   "host_permissions": ["*://riders.uber.com/*"],
